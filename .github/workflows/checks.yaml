@@ -1,0 +1,46 @@
+name: 🚨 Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  lint:
+    name: 📝 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🗄️ Checkout Code
+        uses: actions/checkout@v4
+      - name: 📝 SwiftLint
+        uses: stanfordbdhg/action-swiftlint@v4
+        with:
+          args: --strict
+  test:
+    name: 🧪 Test
+    runs-on: macos-15
+    strategy:
+      matrix:
+        command: [test]
+        platform: [IOS, MACOS, MAC_CATALYST, TVOS, VISIONOS, WATCHOS]
+      fail-fast: false
+    steps:
+      - name: 🧰 Select Xcode Version
+        run: xcodes select 16
+      - name: 🖥️ List Available Devices
+        run: xcrun simctl list devices available
+      - name: 🗄️ Checkout Code
+        uses: actions/checkout@v4
+      - name: 🧪 Run Tests
+        run: make XCODEBUILD_ARGUMENT='${{ matrix.command }}' CONFIG=Debug PLATFORM='${{ matrix.platform }}' xcodebuild
+      - name: 📊 Upload Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
