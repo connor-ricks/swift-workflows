@@ -44,40 +44,40 @@ struct ValueWorkflow<Value: Sendable & Hashable>: Workflow {
     // MARK: Workflow
 
     func run() async throws -> Value {
-        defer { log("completed run.") }
+//        defer { log("completed run.") }
 
-        log("starting run")
+//        log("starting run")
         if delay != .zero {
-            log("sleeping for \(delay)")
+//            log("sleeping for \(delay)")
             try? await clock.sleep(for: delay)
-            log("finished sleeping.")
+//            log("finished sleeping.")
         }
 
-        log("checking cancellation")
+//        log("checking cancellation")
         try Task.checkCancellation()
 
         switch result {
         case .success(let value):
-            log("tracing value.")
+//            log("tracing value.")
             await trace?(value)
-            log("returning value")
+//            log("returning value")
             return value
         case .failure(let error):
-            log("tracing value.")
+//            log("tracing value.")
             await trace?(error)
-            log("throwing error")
+//            log("throwing error")
             throw error
         }
     }
 
-    private func log(_ message: String) {
-        let prefix = switch result {
-        case .success(let value):
-            "[ INFO ] ValueWorkflow(value: \(value))"
-        case .failure(let error):
-            "[ INFO ] ValueWorkflow(throwing: \(error))"
-        }
-
-        print("\(prefix) \(message)")
-    }
+//    private func log(_ message: String) {
+//        let prefix = switch result {
+//        case .success(let value):
+//            "[ INFO ] ValueWorkflow(value: \(value))"
+//        case .failure(let error):
+//            "[ INFO ] ValueWorkflow(throwing: \(error))"
+//        }
+//
+//        print("\(prefix) \(message)")
+//    }
 }
