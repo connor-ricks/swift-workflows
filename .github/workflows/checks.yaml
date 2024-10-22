@@ -28,7 +28,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        platform: [IOS, MACOS, MAC_CATALYST, TVOS, WATCHOS, VISIONOS]
+        platform: [IOS, MACOS, MAC_CATALYST, TVOS, WATCHOS]
     steps:
       - name: 👀 Install visionOS runtime
         if: matrix.platform == 'visionOS'
