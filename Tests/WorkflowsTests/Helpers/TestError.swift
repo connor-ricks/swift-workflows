@@ -1,13 +1,9 @@
 import Foundation
 
-struct TestError<Value: Sendable & Equatable>: Error, Equatable {
+/// An error constructed from a given value. Useful in tests for validating the expected error is thrown.
+struct TestError<Value: Sendable & Hashable>: Error, Hashable {
+
+    // MARK: Properties
+
     let value: Value
-
-    init() where Value == Int {
-        self.init(value: 1)
-    }
-
-    init(value: Value) {
-        self.value = value
-    }
 }
