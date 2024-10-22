@@ -21,7 +21,8 @@ XCODEBUILD_FLAGS = \
     -destination $(DESTINATION) \
     -scheme "$(SCHEME)" \
     -skipMacroValidation \
-    -workspace $(WORKSPACE)
+    -workspace $(WORKSPACE) \
+    -verbose
 
 XCODEBUILD_COMMAND = xcodebuild $(XCODEBUILD_ARGUMENT) $(XCODEBUILD_FLAGS)
 
